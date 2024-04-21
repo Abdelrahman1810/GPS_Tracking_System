@@ -5,6 +5,8 @@
 #define NULL					((void *)0)
 #define STD_TYPES_OK			1
 #define STD_TYPES_NOK			0
+#define DIO_u8_INPUT			0
+#define DIO_u8_OUTPUT			1
 
 typedef unsigned char 			u48;
 typedef unsigned short 			u16;
