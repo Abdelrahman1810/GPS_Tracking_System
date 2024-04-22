@@ -20,17 +20,22 @@
 #define DIO_u8_PIN_7 	7
 
 
-u8_t DIO_u8_tSetPinDirection 	(u8 copy_u8PortId, u8 copy_u8PinId, u8 copy_u8PinDirection);		//Saad
+// define High and low
+#define DIO_u8_HIGH     1
+#define DIO_u8_LOW      0
 
-u8_t DIO_u8_tSetPinValue 		(u8 copy_u8PortId, u8 copy_u8PinId, u8 copy_u8PinValue);			//Abdelrahman
 
-u8_t DIO_u8_tGetPinValue		(u8 copy_u8PortId, u8 copy_u8PinId, u8 *copy_pu8ReturnedPinValue);	//Orabi
+u8_t DIO_u8_tSetPinDirection   (u8_t copy_u8PortId, u8_t copy_u8PinId, u8_t copy_u8PinDirection);		//Saad
+  
+u8_t DIO_u8_tSetPinValue 	   (u8_t copy_u8PortId, u8_t copy_u8PinId, u8_t copy_u8PinValue);			//Abdelrahman
+  
+u8_t DIO_u8_tGetPinValue	   (u8_t copy_u8PortId, u8_t copy_u8PinId, u8_t *copy_pu8ReturnedPinValue);	//Orabi
+  
+u8_t DIO_u8_tSetPortDirection  (u8_t copy_u8PortId, u8_t copy_u8PortDirection);						    //Eman
 
-u8_t DIO_u8_tSetPortDirection 	(u8 copy_u8PortId, u8 copy_u8PortDirection);						//Eman
-
-u8_t DIO_u8_tSetPortValue		(u8 copy_u8PortIa, u8 copy_u8PortValue);							//Sarah
-
-u8_t DIO_u8_tGetPortValue		(u8 copy_u8PortId, u8 *copy_u8ReturnedPortValue);					//Engy
+u8_t DIO_u8_tSetPortValue	   (u8_t copy_u8PortId, u8_t copy_u8PortValue);							    //Sarah
+  
+u8_t DIO_u8_tGetPortValue	   (u8_t copy_u8PortId, u8_t *copy_u8ReturnedPortValue);					//Engy
 
 
 

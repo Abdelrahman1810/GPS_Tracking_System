@@ -302,12 +302,14 @@
 // register.
 //
 //*****************************************************************************
-#define SYSCTL_RCGCGPIO_R5      0 //PORTF 
-#define SYSCTL_RCGCGPIO_R4      1 //PORTE	 
-#define SYSCTL_RCGCGPIO_R3      2 //PORTD
-#define SYSCTL_RCGCGPIO_R2      3 //PORTC
-#define SYSCTL_RCGCGPIO_R1      4 //PORTB
-#define SYSCTL_RCGCGPIO_R0      5 //PORTA
+
+#define SYSCTL_RCGCGPIO_R0      0 //PORTA 
+#define SYSCTL_RCGCGPIO_R1      1 //PORTB	 
+#define SYSCTL_RCGCGPIO_R2      2 //PORTC
+#define SYSCTL_RCGCGPIO_R3      3 //PORTD
+#define SYSCTL_RCGCGPIO_R4      4 //PORTE
+#define SYSCTL_RCGCGPIO_R5      5 //PORTF
+
 
 //*****************************************************************************
 //
@@ -315,9 +317,10 @@
 // register.
 //
 //*****************************************************************************
-#define SYSCTL_PRGPIO_R5      0 //PORTF 
-#define SYSCTL_PRGPIO_R4      1 //PORTE	 
-#define SYSCTL_PRGPIO_R3      2 //PORTD
-#define SYSCTL_PRGPIO_R2      3 //PORTC
-#define SYSCTL_PRGPIO_R1      4 //PORTB
-#define SYSCTL_PRGPIO_R0      5 //PORTA
+
+#define SYSCTL_PRGPIO_R0      0 //PORTA
+#define SYSCTL_PRGPIO_R1      1 //PORTB
+#define SYSCTL_PRGPIO_R2      2 //PORTC
+#define SYSCTL_PRGPIO_R3      3 //PORTD
+#define SYSCTL_PRGPIO_R4      4 //PORTE	 
+#define SYSCTL_PRGPIO_R5      5 //PORTF 

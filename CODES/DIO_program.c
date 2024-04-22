@@ -4,15 +4,25 @@
 #include "STD_TYPES.h"
 #include "tm4c123gh6pm.h"
 
-u8 DIO_u8_tSetPinDirection 	(u8 copy_u8PortId, u8 copy_u8PinId, u8 copy_u8PinDirection)
-{
+//void isCLKWork(u32 SYSCTL_PRGPIO) {
+//	if (!GET_BIT(SYSCTL_PRGPIO_R, SYSCTL_PRGPIO))
+//	{
+//		SET_BIT(SYSCTL_SCGCGPIO_R, SYSCTL_PRGPIO); // Enable port clock
+//		while (!GET_BIT(SYSCTL_PRGPIO_R, SYSCTL_PRGPIO)); // Wait till enabled
+//	}
+//	return;
+//}
+
+
+// Saad
+u8_t DIO_u8_tSetPinDirection (u8_t copy_u8PortId, u8_t copy_u8PinId, u8_t copy_u8PinDirection) {
 	if (copy_u8PinId >= DIO_u8_PIN_0 && copy_u8PinId <= DIO_u8_PIN_7) //Check if pin number is valid
 	{
 		switch (copy_u8PortId)
 		{
-		case DIO_u8PORTA:
-			SET_BIT(SYSCTL_SCGCGPIO_R, SYSCTL_RCGCGPIO_R0) // Enable port clock
-				while (!GET_BIT(SYSCTL_PRGPIO_R, SYSCTL_PRGPIO_R0)); // Wait till enabled
+		case DIO_u8PORT_A:
+			SET_BIT(SYSCTL_SCGCGPIO_R, SYSCTL_RCGCGPIO_R0); // Enable port clock
+			while (!GET_BIT(SYSCTL_PRGPIO_R, SYSCTL_PRGPIO_R0)); // Wait till enabled
 			switch (copy_u8PinDirection)
 			{
 			case DIO_u8_INPUT:
@@ -27,15 +37,15 @@ u8 DIO_u8_tSetPinDirection 	(u8 copy_u8PortId, u8 copy_u8PinId, u8 copy_u8PinDir
 			}
 			break;
 
-		case DIO_u8PORTB:
+		case DIO_u8PORT_B:
 			break;
-		case DIO_u8PORTC:
+		case DIO_u8PORT_C:
 			break;
-		case DIO_u8PORTD:
+		case DIO_u8PORT_D:
 			break;
-		case DIO_u8PORTE:
+		case DIO_u8PORT_E:
 			break;
-		case DIO_u8PORTF:
+		case DIO_u8PORT_F:
 			break;
 		default:
 			return STD_TYPES_NOK; // Invalid port
@@ -46,42 +56,89 @@ u8 DIO_u8_tSetPinDirection 	(u8 copy_u8PortId, u8 copy_u8PinId, u8 copy_u8PinDir
 		return STD_TYPES_NOK; // Invalid pin number
 }
 
-
-u8_t DIO_u8_tSetPinValue 		(u8 copy_u8PortId, u8 copy_u8PinId, u8 copy_u8PinValue);
-
-
-
-u8_t DIO_u8_tGetPinValue		(u8 copy_u8PortId, u8 copy_u8PinId, u8 *copy_pu8ReturnedPinValue)
-{
-   
-
-if((copy_pu8ReturnedPinValue != NULL)&&(copy_u8PortId<=DIO_u8_PORTF&&copy_u8PortId>=DIO_u8_PORTA)&&(copy_u8PinId>=DIO_u8_PIN0&&copy_u8PinId<=DIO_u8_PIN7))
+// Abdelrahman
+u8_t DIO_u8_tSetPinValue (u8_t copy_u8PortId, u8_t copy_u8PinId, u8_t copy_u8PinValue) {
+	//Check if pin number and port name is valid
+	if (  (copy_u8PinId >= DIO_u8_PIN_0 && copy_u8PinId <= DIO_u8_PIN_7) 
+		&&(copy_u8PortId <= DIO_u8PORT_F && copy_u8PortId>=DIO_u8PORT_A))
 	{
-		switch(copy_u8PortId)
+		switch (copy_u8PortId)
 		{
-			case DIO_u8_PORTA:
-			SET_BIT(SYSCTL_SCGCGPIO_R, SYSCTL_RCGCGPIO_R0) // Enable port clock
+		case DIO_u8PORT_A:
+			SET_BIT(SYSCTL_SCGCGPIO_R, SYSCTL_RCGCGPIO_R0); // Enable port clock
 			while (!GET_BIT(SYSCTL_PRGPIO_R, SYSCTL_PRGPIO_R0)); // Wait till enabled
 			
-			*copy_pu8ReturnedPinValue = GET_BIT(GPIO_PORTA_DATA_R,copy_u8PinId);
-			switch(*copy_pu8ReturnedPinValue)
+			switch (copy_u8PinValue)
 			{
-				case DIO_u8_HIGH: *copy_pu8ReturnedPinValue = DIO_u8_HIGH;break;
-				case DIO_u8_LOW : *copy_pu8ReturnedPinValue = DIO_u8_LOW;break;
-				default:
-				return STD_TYPES_NOK; // Invalid Value
+			case DIO_u8_HIGH:
+				SET_BIT(GPIO_PORTA_DATA_R, copy_u8PinId);
+				break;
+			case DIO_u8_LOW:
+				CLR_BIT(GPIO_PORTA_DATA_R, copy_u8PinId);
+				break;
+			default:
+				return STD_TYPES_NOK; // Invalid direction
 			}
 			break;
+		case DIO_u8PORT_F:
+			SET_BIT(SYSCTL_SCGCGPIO_R, SYSCTL_RCGCGPIO_R5); // Enable port clock
+			while (!GET_BIT(SYSCTL_PRGPIO_R, SYSCTL_RCGCGPIO_R5)); // Wait till enabled
+			
+			switch (copy_u8PinValue)
+			{
+			case DIO_u8_HIGH:
+				SET_BIT(GPIO_PORTF_DATA_R, copy_u8PinId);
+				break;
+			case DIO_u8_LOW:
+				CLR_BIT(GPIO_PORTF_DATA_R, copy_u8PinId);
+				break;
+			default:
+				return STD_TYPES_NOK; // Invalid direction
+			}
+			break;
+		default:
+			return STD_TYPES_NOK; // Invalid Value
+		}
+	}
+	else
+		return STD_TYPES_NOK; // Invalid 
+	return STD_TYPES_OK; // Mission Done
+}
 
-		case DIO_u8PORTB:
+// Oraby
+u8_t DIO_u8_tGetPinValue (u8_t copy_u8PortId, u8_t copy_u8PinId, u8_t *copy_pu8ReturnedPinValue) {
+   if((copy_pu8ReturnedPinValue != NULL)
+   		&&(copy_u8PortId <= DIO_u8PORT_F && copy_u8PortId>=DIO_u8PORT_A)
+		&&(copy_u8PinId  >= DIO_u8_PIN_0 && copy_u8PinId<=DIO_u8_PIN_7)) {
+		switch(copy_u8PortId)
+		{
+			case DIO_u8PORT_A:
+				SET_BIT(SYSCTL_SCGCGPIO_R, SYSCTL_RCGCGPIO_R0); // Enable port clock
+				while (!GET_BIT(SYSCTL_PRGPIO_R, SYSCTL_PRGPIO_R0)); // Wait till enabled
+				
+				*copy_pu8ReturnedPinValue = GET_BIT(GPIO_PORTA_DATA_R,copy_u8PinId);
+				
+				switch(*copy_pu8ReturnedPinValue) {
+					case DIO_u8_HIGH:
+						*copy_pu8ReturnedPinValue = DIO_u8_HIGH;
+						break;
+					case DIO_u8_LOW :
+						*copy_pu8ReturnedPinValue = DIO_u8_LOW;
+						break;
+					default:
+						return STD_TYPES_NOK; // Invalid Value
+				}
 			break;
-		case DIO_u8PORTC:
+
+		case DIO_u8PORT_B:
 			break;
-		case DIO_u8PORTD:
+		case DIO_u8PORT_C:
 			break;
-		case DIO_u8PORTE:
+		case DIO_u8PORT_D:
 			break;
-		case DIO_u8PORTF:
+		case DIO_u8PORT_E:
+			break;
+		case DIO_u8PORT_F:
 			break;
 		default:
 			return STD_TYPES_NOK; // Invalid port
@@ -106,8 +163,8 @@ if((copy_pu8ReturnedPinValue != NULL)&&(copy_u8PortId<=DIO_u8_PORTF&&copy_u8Port
 
 
 
-u8_t DIO_u8_tSetPortDirection 	(u8 copy_u8PortId, u8 copy_u8PortDirection);
+u8_t DIO_u8_tSetPortDirection 	(u8_t copy_u8PortId, u8_t copy_u8PortDirection);
 
-u8_t DIO_u8_tSetPortValue		(u8 copy_u8PortIa, u8 copy_u8PortValue);
+u8_t DIO_u8_tSetPortValue		(u8_t copy_u8PortIa, u8_t copy_u8PortValue);
 
-u8_t DIO_u8_tGetPortValue		(u8 copy_u8PortId, u8 *copy_u8ReturnedPortValue);
+u8_t DIO_u8_tGetPortValue		(u8_t copy_u8PortId, u8_t *copy_u8ReturnedPortValue);
