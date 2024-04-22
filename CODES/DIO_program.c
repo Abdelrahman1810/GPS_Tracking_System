@@ -110,4 +110,32 @@ u8_t DIO_u8_tSetPortDirection 	(u8 copy_u8PortId, u8 copy_u8PortDirection);
 
 u8_t DIO_u8_tSetPortValue		(u8 copy_u8PortIa, u8 copy_u8PortValue);
 
-u8_t DIO_u8_tGetPortValue		(u8 copy_u8PortId, u8 *copy_u8ReturnedPortValue);
+u8_t DIO_u8_tGetPortValue		(u8 copy_u8PortId, u8 *copy_u8ReturnedPortValue)
+{
+    if(copy_u8ReturnedPortValue != NULL && ((copy_u8PortId >=DIO_u8PORT_A)&&(copy_u8PortId <=DIO_u8PORT_F)))
+    {
+        switch (copy_u8PortId)
+        {
+            case DIO_u8PORT_A:*copy_u8ReturnedPortValue = GPIO_PORTA_DATA_R;
+            break;
+             case DIO_u8PORT_B:*copy_u8ReturnedPortValue = GPIO_PORTB_DATA_R;
+            break;
+             case DIO_u8PORT_C:*copy_u8ReturnedPortValue = GPIO_PORTC_DATA_R;
+            break;
+             case DIO_u8PORT_D:*copy_u8ReturnedPortValue = GPIO_PORTD_DATA_R;
+            break;
+             case DIO_u8PORT_E:*copy_u8ReturnedPortValue = GPIO_PORTE_DATA_R;
+            break;
+             case DIO_u8PORT_F:*copy_u8ReturnedPortValue = GPIO_PORTF_DATA_R;
+            break;
+             default:
+                return STD_TYPES_NOK; //if there is error
+        }
+        return STD_TYPES_OK;
+    }
+    else
+    {
+        return STD_TYPES_NOK;
+    }
+}
+
