@@ -13,6 +13,18 @@
 //	return;
 //}
 
+//Amr
+void UART0_Write(u8 data){
+	while((UART0_FR_R & 0X0020) != 0); //check if the FIFO is full
+	UART0_DR_R = data;
+}
+
+//Amr
+void UART1_Write(u8 data){
+	while((UART1_FR_R & 0X0020) != 0); //check if the FIFO is full
+	UART1_DR_R = data;
+}
+
 
 // Saad
 u8_t DIO_u8_tSetPinDirection (u8_t copy_u8PortId, u8_t copy_u8PinId, u8_t copy_u8PinDirection) {
