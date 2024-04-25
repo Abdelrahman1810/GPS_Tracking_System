@@ -27,7 +27,7 @@ void UART1_Write(u8 data){
 
 
 // Saad
-u8_t DIO_u8_tSetPinDirection (u8_t copy_u8PortId, u8_t copy_u8PinId, u8_t copy_u8PinDirection) {
+u8 DIO_u8SetPinDirection (u8 copy_u8PortId, u8 copy_u8PinId, u8 copy_u8PinDirection) {
 	if (copy_u8PinId >= DIO_u8_PIN_0 && copy_u8PinId <= DIO_u8_PIN_7) //Check if pin number is valid
 	{
 		switch (copy_u8PortId)
@@ -69,7 +69,7 @@ u8_t DIO_u8_tSetPinDirection (u8_t copy_u8PortId, u8_t copy_u8PinId, u8_t copy_u
 }
 
 // Abdelrahman
-u8_t DIO_u8_tSetPinValue (u8_t copy_u8PortId, u8_t copy_u8PinId, u8_t copy_u8PinValue) {
+u8 DIO_u8SetPinValue (u8 copy_u8PortId, u8 copy_u8PinId, u8 copy_u8PinValue) {
 	//Check if pin number and port name is valid
 	if (  (copy_u8PinId >= DIO_u8_PIN_0 && copy_u8PinId <= DIO_u8_PIN_7) 
 		&&(copy_u8PortId <= DIO_u8PORT_F && copy_u8PortId>=DIO_u8PORT_A))
@@ -118,7 +118,7 @@ u8_t DIO_u8_tSetPinValue (u8_t copy_u8PortId, u8_t copy_u8PinId, u8_t copy_u8Pin
 }
 
 // Oraby
-u8_t DIO_u8_tGetPinValue (u8_t copy_u8PortId, u8_t copy_u8PinId, u8_t *copy_pu8ReturnedPinValue) {
+u8 DIO_u8GetPinValue (u8 copy_u8PortId, u8 copy_u8PinId, u8 *copy_pu8ReturnedPinValue) {
    if((copy_pu8ReturnedPinValue != NULL)
    		&&(copy_u8PortId <= DIO_u8PORT_F && copy_u8PortId>=DIO_u8PORT_A)
 		&&(copy_u8PinId  >= DIO_u8_PIN_0 && copy_u8PinId<=DIO_u8_PIN_7)) {
@@ -160,27 +160,12 @@ u8_t DIO_u8_tGetPinValue (u8_t copy_u8PortId, u8_t copy_u8PinId, u8_t *copy_pu8R
 	return STD_TYPES_NOK;
 }
 
+u8 DIO_u8SetPortDirection 	(u8 copy_u8PortId, u8 copy_u8PortDirection);
 
+u8 DIO_u8SetPortValue		(u8 copy_u8PortIa, u8 copy_u8PortValue);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-u8_t DIO_u8_tSetPortDirection 	(u8_t copy_u8PortId, u8_t copy_u8PortDirection);
-
-u8_t DIO_u8_tSetPortValue		(u8_t copy_u8PortIa, u8_t copy_u8PortValue);
 //Engy
-
-u8_t DIO_u8_tGetPortValue		(u8_t copy_u8PortId, u8_t *copy_u8ReturnedPortValue)
+u8 DIO_u8GetPortValue		(u8 copy_u8PortId, u8 *copy_u8ReturnedPortValue)
 {
      if(copy_u8ReturnedPortValue != NULL && ((copy_u8PortId >=DIO_u8PORT_A)&&(copy_u8PortId <=DIO_u8PORT_F)))
     {
