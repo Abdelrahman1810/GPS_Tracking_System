@@ -6,6 +6,7 @@
 
 #define PF_mask 0x20
 #define PF0_mask 0x01
+#define PF123_mask 0x0E
 
 //void isCLKWork(u32 SYSCTL_PRGPIO) {
 //	if (!GET_BIT(SYSCTL_PRGPIO_R, SYSCTL_PRGPIO))
@@ -15,6 +16,20 @@
 //	}
 //	return;
 //}
+///////////////////
+//////////Engy///////
+void RGBLED_init(void){
+	SYSCTL_RCGCGPIO_R |= PF_mask; //clock of portf
+	while((SYSCTL_PRGPIO_R & PF_mask)==0);
+	GPIO_PORTF_LOCK_R = GPIO_LOCK_KEY;
+	GPIO_PORTF_CR_R |= PF123_mask;
+	GPIO_PORTF_AFSEL_R &= ~PF123_mask;
+	GPIO_PORTF_AMSEL_R &= ~PF123_mask;
+	GPIO_PORTF_PCTL_R &= ~0x0000FFF0; //clear bits
+	GPIO_PORTF_DIR_R  |= PF123_mask; //Leds are output
+	GPIO_PORTF_DEN_R  |= PF123_mask;
+	GPIO_PORTF_DATA_R &= ~PF123_mask;
+}
 //Sarah 
 
 void PushButtonInit(){
