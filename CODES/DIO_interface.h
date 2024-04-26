@@ -19,19 +19,36 @@
 #define DIO_u8_PIN_6 	6
 #define DIO_u8_PIN_7 	7
 
+/* Macros for UART */
+#define UART0           0
+#define UART1           1
+#define UART2           2
+#define UART3           3
+#define UART4           4
+#define UART5           5
+#define UART6           6
+#define UART7           7
 
-u8_t DIO_u8_tSetPinDirection 	(u8 copy_u8PortId, u8 copy_u8PinId, u8 copy_u8PinDirection);		//Saad
+// define High and low
+#define DIO_u8_HIGH     1
+#define DIO_u8_LOW      0
 
-u8_t DIO_u8_tSetPinValue 		(u8 copy_u8PortId, u8 copy_u8PinId, u8 copy_u8PinValue);			//Abdelrahman
+/* DIO functions */
+u8 DIO_u8SetPinDirection   (u8 copy_u8PortId, u8 copy_u8PinId, u8 copy_u8PinDirection);		//Saad
+  
+u8 DIO_u8SetPinValue 	   (u8 copy_u8PortId, u8 copy_u8PinId, u8 copy_u8PinValue);			//Abdelrahman
+  
+u8 DIO_u8GetPinValue	   (u8 copy_u8PortId, u8 copy_u8PinId, u8 *copy_pu8ReturnedPinValue);	//Orabi
+  
+u8 DIO_u8SetPortDirection  (u8 copy_u8PortId, u8 copy_u8PortDirection);						    //Eman
 
-u8_t DIO_u8_tGetPinValue		(u8 copy_u8PortId, u8 copy_u8PinId, u8 *copy_pu8ReturnedPinValue);	//Orabi
+u8 DIO_u8SetPortValue	   (u8 copy_u8PortId, u8 copy_u8PortValue);							    //Sarah
+  
+u8 DIO_u8GetPortValue	   (u8 copy_u8PortId, u8 *copy_u8ReturnedPortValue);					//Engy
 
-u8_t DIO_u8_tSetPortDirection 	(u8 copy_u8PortId, u8 copy_u8PortDirection);						//Eman
+/* UART functions */
+u8 UART_u8ReadChar          (u8 copy_u8UARTNum);
 
-u8_t DIO_u8_tSetPortValue		(u8 copy_u8PortIa, u8 copy_u8PortValue);							//Sarah
-
-u8_t DIO_u8_tGetPortValue		(u8 copy_u8PortId, u8 *copy_u8ReturnedPortValue);					//Engy
-
-
+void UART_ReadStr         (u8 copy_u8UARTNum, u8 *copy_pu8GPSData);
 
 #endif
