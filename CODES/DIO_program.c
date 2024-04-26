@@ -222,7 +222,7 @@ u8 DIO_u8GetPinValue (u8 copy_u8PortId, u8 copy_u8PinId, u8 *copy_pu8ReturnedPin
 u8 DIO_u8SetPortDirection 	(u8 copy_u8PortId, u8 copy_u8PortDirection);
 //Sarah 
 
-u8 DIO_u8SetPortValue		(u8 copy_u8PortIa, u8 copy_u8PortValue){
+u8 DIO_u8SetPortValue		(u8 copy_u8PortId, u8 copy_u8PortValue){
 switch(copy_u8PortId)
 	{
 
