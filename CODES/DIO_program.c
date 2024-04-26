@@ -161,8 +161,36 @@ u8 DIO_u8GetPinValue (u8 copy_u8PortId, u8 copy_u8PinId, u8 *copy_pu8ReturnedPin
 }
 
 u8 DIO_u8SetPortDirection 	(u8 copy_u8PortId, u8 copy_u8PortDirection);
+//Sarah 
 
-u8 DIO_u8SetPortValue		(u8 copy_u8PortIa, u8 copy_u8PortValue);
+u8 DIO_u8SetPortValue		(u8 copy_u8PortIa, u8 copy_u8PortValue){
+	switch(copy_u8PortId)
+	{
+
+		case DIO_u8PORTA:
+		GPIO_PORTA_DATA_R=copy_u8PortValue;
+		break;
+		case DIO_u8PORTB:
+		GPIO_PORTB_DATA_R=copy_u8PortValue;
+		break;
+		case DIO_u8PORTC:
+		GPIO_PORTC_DATA_R=copy_u8PortValue;
+		break;
+		case DIO_u8PORTD:
+		GPIO_PORTD_DATA_R=copy_u8PortValue;
+		break;
+		case DIO_u8PORTE:
+		GPIO_PORTE_DATA_R=copy_u8PortValue;
+		break;
+		case DIO_u8PORTF:
+		GPIO_PORTF_DATA_R=copy_u8PortValue;
+		break;
+		default: //invalid port
+		return SYD_TYPES_NOK;
+		break;
+		return SYD_TYPES_OK;
+	}
+}
 
 //Engy
 u8 DIO_u8GetPortValue		(u8 copy_u8PortId, u8 *copy_u8ReturnedPortValue)
