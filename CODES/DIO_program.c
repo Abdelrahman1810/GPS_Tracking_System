@@ -31,6 +31,34 @@ void PushButtonInit(){
 } 
 
 /* UART functions */
+//Eman 
+// Baud Rate=9600 bits/sec 
+// 16 MHz System Clock  , ClkDivision=16
+void UART0_Init(void){
+	SYSCTL_RCGCUART_R |=SYSCTL_RCGCUART_R0;  // Activate UART0
+	SYSCTL_RCGCGPIO_R |=SYSCTL_RCGCGPIO_R0; // Activate PORTA
+	UART1_CTL_R &= ~UART_CTL_UARTEN; // disable UART0
+	UART1_IBRD_R = 104; // IBRD=int(16000000 /9600*16)=int(104.166667)
+	UART1_FBRD_R = 11; // FBRD=int(0.166667*64 + 0.5)
+	UART1_LCRH_R = (UART_LCRH_WLEN_8 | UART_LCRH_FEN); // 8-bit word length ,enable FIFO
+	UART1_CTL_R &= (UART_CTL_UARTEN | UART_CTL_RXE | UART_CTL_TXE); // enable RXE ,TXE ,UART0
+	GPIO_PORTA_AFSEL_R |=0x03; // enable Alternate func PA0,PA1
+	GPIO_PORTA_PCTL_R = (GPIO_PORTA_PCTL_R & ~0xFF) | (GPIO_PCTL_PA0_U0RX | GPIO_PCTL_PA1_U0TX); // configure UART for PA0, PA1
+	GPIO_PORTA_DEN_R |= 0x03; // enable digitai i/o for PA0 ,PA1
+	GPIO_PORTA_AMSEL_R &= ~0x03; // disable analog func for PA0 ,PA1
+	
+	void UART1_Init(void){
+	SYSCTL_RCGCUART_R |=SYSCTL_RCGCUART_R1; // Activate UART1
+	SYSCTL_RCGCGPIO_R |=SYSCTL_RCGCGPIO_R1; // Activate PORTB
+	UART1_CTL_R &= ~UART_CTL_UARTEN; // disable UART1
+	UART1_IBRD_R = 104; // IBRD=int(16000000 /9600*16)=int(104.166667)
+	UART1_FBRD_R = 11; // FBRD=int(0.166667*64 + 0.5)
+	UART1_LCRH_R = (UART_LCRH_WLEN_8 | UART_LCRH_FEN); // 8-bit word length ,enable FIFO
+	UART1_CTL_R &= (UART_CTL_UARTEN | UART_CTL_RXE | UART_CTL_TXE); // enable RXE ,TXE ,UART1
+	GPIO_PORTB_AFSEL_R |=0x03; // enable Alternate func PB0,PB1
+	GPIO_PORTB_PCTL_R = (GPIO_PORTB_PCTL_R & ~0xFF) | (GPIO_PCTL_PB0_U1RX | GPIO_PCTL_PB1_U1TX); // configure UART for PB0, PB1
+	GPIO_PORTB_DEN_R |= 0x03; // enable digitai i/o for PB0 ,PB1
+	GPIO_PORTB_AMSEL_R &= ~0x03; // disable analog func for PB0 ,PB1
 //Amr
 void UART0_Write(u8 data){
 	while((UART0_FR_R & 0X0020) != 0); //check if the FIFO is full
