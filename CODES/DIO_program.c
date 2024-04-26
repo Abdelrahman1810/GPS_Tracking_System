@@ -3,6 +3,8 @@
 #include "DIO_private.h"
 #include "STD_TYPES.h"
 #include "tm4c123gh6pm.h"
+#define PF_mask 0x20
+#define PF0_mask 0x01
 
 //void isCLKWork(u32 SYSCTL_PRGPIO) {
 //	if (!GET_BIT(SYSCTL_PRGPIO_R, SYSCTL_PRGPIO))
@@ -12,6 +14,21 @@
 //	}
 //	return;
 //}
+//Sarah 
+
+void PushButtonInit(){
+	SET_BIT(SYSCTL_RCGCGPIO_R,PF_mask); //configure clk for portf
+	while((SYSCTL_PRGPIO_R&PF_mask)==0);
+	GPIO_PORTF_LOCK_R= GPIO_LOCK_KEY;
+	GPIO_PORTF_CR_R |=PF0_mask;
+	GPIO_PORTF_AMSEL_R &= ~PF0_mask;
+	GPIO_PORTF_AFSEL_R &= ~PF0_mask;
+	GPIO_PORTF_PCTL_R &= ~0x0000000f; //clear bits in ptcl
+	GPIO_PORTF_DIR_R &= ~PF0_mask; // set buttons as output pins
+	GPIO_PORTF_DEN_R |=PF0_mask; //enable digital i/o
+	GPIO_PORTF_PUR_R = PF0_mask;
+} 
+
 
 //Amr
 void UART0_Write(u8 data){
