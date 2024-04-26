@@ -4,7 +4,7 @@
 #include "STD_TYPES.h"
 #include "tm4c123gh6pm.h"
 
-u8 DIO_u8_tSetPinDirection 	(u8 copy_u8PortId, u8 copy_u8PinId, u8 copy_u8PinDirection)
+u8 DIO_u8SetPinDirection 	(u8 copy_u8PortId, u8 copy_u8PinId, u8 copy_u8PinDirection)
 {
 	if (copy_u8PinId >= DIO_u8_PIN_0 && copy_u8PinId <= DIO_u8_PIN_7) //Check if pin number is valid
 	{
