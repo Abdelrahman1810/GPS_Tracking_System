@@ -30,6 +30,29 @@ void PushButtonInit(){
 	GPIO_PORTF_PUR_R = PF0_mask;
 } 
 
+
+u8 SW2_Input (void)
+{
+return GPIO_PORTF_DATA_R 0x01;
+}
+
+
+void work(u8 SW2)
+{   
+   SW2 = SW2_Input();
+ if (SW2/* && distance >= 100*/)
+       LEDs_Output(0x02);
+}
+
+
+//LEDs Output
+void LEDs_Output(u8 data)
+{
+GPIO_PORTF_DATA_R &= ~PF123_mask;
+GPIO_PORTF_DATA_R |= data;
+}
+
+
 /* UART functions */
 //Eman 
 // Baud Rate=9600 bits/sec 
