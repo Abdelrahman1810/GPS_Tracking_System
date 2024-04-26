@@ -223,31 +223,31 @@ u8 DIO_u8SetPortDirection 	(u8 copy_u8PortId, u8 copy_u8PortDirection);
 //Sarah 
 
 u8 DIO_u8SetPortValue		(u8 copy_u8PortIa, u8 copy_u8PortValue){
-	switch(copy_u8PortId)
+switch(copy_u8PortId)
 	{
 
-		case DIO_u8PORTA:
+		case DIO_u8PORT_A:
 		GPIO_PORTA_DATA_R=copy_u8PortValue;
 		break;
-		case DIO_u8PORTB:
+		case DIO_u8PORT_B:
 		GPIO_PORTB_DATA_R=copy_u8PortValue;
 		break;
-		case DIO_u8PORTC:
+		case DIO_u8PORT_C:
 		GPIO_PORTC_DATA_R=copy_u8PortValue;
 		break;
-		case DIO_u8PORTD:
+		case DIO_u8PORT_D:
 		GPIO_PORTD_DATA_R=copy_u8PortValue;
 		break;
-		case DIO_u8PORTE:
+		case DIO_u8PORT_E:
 		GPIO_PORTE_DATA_R=copy_u8PortValue;
 		break;
-		case DIO_u8PORTF:
+		case DIO_u8PORT_F:
 		GPIO_PORTF_DATA_R=copy_u8PortValue;
 		break;
 		default: //invalid port
-		return SYD_TYPES_NOK;
+		return STD_TYPES_NOK;
 		break;
-		return SYD_TYPES_OK;
+		return STD_TYPES_NOK;
 	}
 }
 
