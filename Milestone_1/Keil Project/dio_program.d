@@ -1,0 +1,10 @@
+.\dio_program.o: ..\CODES\DIO_program.c
+.\dio_program.o: ..\CODES\DIO_interface.h
+.\dio_program.o: ..\CODES\STD_TYPES.h
+.\dio_program.o: ..\CODES\DIO_private.h
+.\dio_program.o: ..\CODES\tm4c123gh6pm.h
+.\dio_program.o: ..\CODES\BIT_MATH.h
+.\dio_program.o: C:\Keil\ARM\ARMCC\bin\..\include\math.h
+.\dio_program.o: C:\Keil\ARM\ARMCC\bin\..\include\stdio.h
+.\dio_program.o: C:\Keil\ARM\ARMCC\bin\..\include\string.h
+.\dio_program.o: C:\Keil\ARM\ARMCC\bin\..\include\stdlib.h

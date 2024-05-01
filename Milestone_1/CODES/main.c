@@ -1,8 +1,3 @@
-#include <math.h>
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-
 #include "STD_TYPES.h"
 #include "interface.h"
 #include "private.h"
@@ -14,8 +9,6 @@ int main() {
     RGBLED_init();   //active port F --> leds 
 
     PushButtonInit();   //active port F --> switch
-
-    Button_Pressed=Sw_Input ();
-
-    Is_Sw_Pressed(Button_Pressed );
+	
+		while(1) Is_Sw_Pressed(Button_Pressed);
 }
