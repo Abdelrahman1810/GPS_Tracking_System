@@ -44,15 +44,13 @@ for x in range(0,num_cordenates,2):
     trail_coordinates.append((float(points[x]),float(points[x+1])))
 
 # extract the map
-kw = {"opacity": 0.89, "weight": 5}
+kw = {"opacity": 0.89, "weight": 3, "smooth_factor": 3}
 folium.PolyLine(
     trail_coordinates,
-    smooth_factor=3,
     line_cap="butt",
     tooltip="GPS_road",
     color="green",
-    opacity = 0.89,
-    weight = 3,
+    **kw
     ).add_to(map)
 
 map.save('map.html')
