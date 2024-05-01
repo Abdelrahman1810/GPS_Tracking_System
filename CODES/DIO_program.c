@@ -4,6 +4,7 @@
 #include "STD_TYPES.h"
 #include "tm4c123gh6pm.h"
 
+<<<<<<< HEAD
 
 /*
 	void isCLKWork(u32 SYSCTL_PRGPIO) {
@@ -15,6 +16,35 @@
 		return;
 	}
 */
+=======
+#define PF_mask 0x20
+#define PF0_mask 0x01
+#define PF123_mask 0x0E
+
+//void isCLKWork(u32 SYSCTL_PRGPIO) {
+//	if (!GET_BIT(SYSCTL_PRGPIO_R, SYSCTL_PRGPIO))
+//	{
+//		SET_BIT(SYSCTL_SCGCGPIO_R, SYSCTL_PRGPIO); // Enable port clock
+//		while (!GET_BIT(SYSCTL_PRGPIO_R, SYSCTL_PRGPIO)); // Wait till enabled
+//	}
+//	return;
+//}
+///////////////////
+//////////Engy///////
+void RGBLED_init(void){
+	SYSCTL_RCGCGPIO_R |= PF_mask; //clock of portf
+	while((SYSCTL_PRGPIO_R & PF_mask)==0);
+	GPIO_PORTF_LOCK_R = GPIO_LOCK_KEY;
+	GPIO_PORTF_CR_R |= PF123_mask;
+	GPIO_PORTF_AFSEL_R &= ~PF123_mask;
+	GPIO_PORTF_AMSEL_R &= ~PF123_mask;
+	GPIO_PORTF_PCTL_R &= ~0x0000FFF0; //clear bits
+	GPIO_PORTF_DIR_R  |= PF123_mask; //Leds are output
+	GPIO_PORTF_DEN_R  |= PF123_mask;
+	GPIO_PORTF_DATA_R &= ~PF123_mask;
+}
+//Sarah 
+>>>>>>> 7ab0cf5aef5eebf18c2bd25cc60aa8ac3eda41ec
 
 // Sarah 
 void PushButtonInit(){
@@ -30,7 +60,33 @@ void PushButtonInit(){
 	GPIO_PORTF_PUR_R = PF0_mask;
 } 
 
+<<<<<<< HEAD
 ///////////////////////////////////////////
+=======
+
+u8 SW2_Input (void)
+{
+return GPIO_PORTF_DATA_R 0x01;
+}
+
+
+void work(u8 SW2)
+{   
+   SW2 = SW2_Input();
+ if (SW2/* && distance >= 100*/)
+       LEDs_Output(0x02);
+}
+
+
+//LEDs Output
+void LEDs_Output(u8 data)
+{
+GPIO_PORTF_DATA_R &= ~PF123_mask;
+GPIO_PORTF_DATA_R |= data;
+}
+
+
+>>>>>>> 7ab0cf5aef5eebf18c2bd25cc60aa8ac3eda41ec
 /* UART functions */
 // Baud Rate = 9600 bits/sec 
 // 16 MHz System Clock  , ClkDivision=16
