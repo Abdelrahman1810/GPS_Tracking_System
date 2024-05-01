@@ -4,7 +4,6 @@
 #include "STD_TYPES.h"
 #include "tm4c123gh6pm.h"
 
-<<<<<<< HEAD
 
 /*
 	void isCLKWork(u32 SYSCTL_PRGPIO) {
@@ -16,7 +15,6 @@
 		return;
 	}
 */
-=======
 #define PF_mask 0x20
 #define PF0_mask 0x01
 #define PF123_mask 0x0E
@@ -44,7 +42,6 @@ void RGBLED_init(void){
 	GPIO_PORTF_DATA_R &= ~PF123_mask;
 }
 //Sarah 
->>>>>>> 7ab0cf5aef5eebf18c2bd25cc60aa8ac3eda41ec
 
 // Sarah 
 void PushButtonInit(){
@@ -60,13 +57,13 @@ void PushButtonInit(){
 	GPIO_PORTF_PUR_R = PF0_mask;
 } 
 
-<<<<<<< HEAD
+//<<<<<<< HEAD
 ///////////////////////////////////////////
-=======
+//=======
 
 u8 SW2_Input (void)
 {
-return GPIO_PORTF_DATA_R 0x01;
+return GPIO_PORTF_DATA_R & 0x01;
 }
 
 
@@ -74,7 +71,7 @@ void work(u8 SW2)
 {   
    SW2 = SW2_Input();
  if (SW2/* && distance >= 100*/)
-       LEDs_Output(0x02);
+    LEDs_Output(0x02);
 }
 
 
@@ -82,11 +79,10 @@ void work(u8 SW2)
 void LEDs_Output(u8 data)
 {
 GPIO_PORTF_DATA_R &= ~PF123_mask;
-GPIO_PORTF_DATA_R |= data;
+GPIO_PORTF_DATA_R |= data;
 }
 
 
->>>>>>> 7ab0cf5aef5eebf18c2bd25cc60aa8ac3eda41ec
 /* UART functions */
 // Baud Rate = 9600 bits/sec 
 // 16 MHz System Clock  , ClkDivision=16
