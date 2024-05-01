@@ -4,19 +4,19 @@
 #include "STD_TYPES.h"
 #include "tm4c123gh6pm.h"
 
-#define PF_mask 0x20
-#define PF0_mask 0x01
 
-//void isCLKWork(u32 SYSCTL_PRGPIO) {
-//	if (!GET_BIT(SYSCTL_PRGPIO_R, SYSCTL_PRGPIO))
-//	{
-//		SET_BIT(SYSCTL_SCGCGPIO_R, SYSCTL_PRGPIO); // Enable port clock
-//		while (!GET_BIT(SYSCTL_PRGPIO_R, SYSCTL_PRGPIO)); // Wait till enabled
-//	}
-//	return;
-//}
-//Sarah 
+/*
+	void isCLKWork(u32 SYSCTL_PRGPIO) {
+		if (!GET_BIT(SYSCTL_PRGPIO_R, SYSCTL_PRGPIO))
+		{
+			SET_BIT(SYSCTL_SCGCGPIO_R, SYSCTL_PRGPIO); // Enable port clock
+			while (!GET_BIT(SYSCTL_PRGPIO_R, SYSCTL_PRGPIO)); // Wait till enabled
+		}
+		return;
+	}
+*/
 
+// Sarah 
 void PushButtonInit(){
 	SET_BIT(SYSCTL_RCGCGPIO_R,PF_mask); //configure clk for portf
 	while((SYSCTL_PRGPIO_R&PF_mask)==0);
@@ -30,11 +30,14 @@ void PushButtonInit(){
 	GPIO_PORTF_PUR_R = PF0_mask;
 } 
 
+///////////////////////////////////////////
 /* UART functions */
-//Eman 
-// Baud Rate=9600 bits/sec 
+// Baud Rate = 9600 bits/sec 
 // 16 MHz System Clock  , ClkDivision=16
-void UART0_Init(void){
+///////////////////////////////////////////
+
+// Eman 
+void UART0_Init(void) {
 	SYSCTL_RCGCUART_R |=SYSCTL_RCGCUART_R0;  // Activate UART0
 	SYSCTL_RCGCGPIO_R |=SYSCTL_RCGCGPIO_R0; // Activate PORTA
 	UART1_CTL_R &= ~UART_CTL_UARTEN; // disable UART0
@@ -46,8 +49,10 @@ void UART0_Init(void){
 	GPIO_PORTA_PCTL_R = (GPIO_PORTA_PCTL_R & ~0xFF) | (GPIO_PCTL_PA0_U0RX | GPIO_PCTL_PA1_U0TX); // configure UART for PA0, PA1
 	GPIO_PORTA_DEN_R |= 0x03; // enable digitai i/o for PA0 ,PA1
 	GPIO_PORTA_AMSEL_R &= ~0x03; // disable analog func for PA0 ,PA1
-	
-	void UART1_Init(void){
+}
+
+// Eman
+void UART1_Init(void) {
 	SYSCTL_RCGCUART_R |=SYSCTL_RCGCUART_R1; // Activate UART1
 	SYSCTL_RCGCGPIO_R |=SYSCTL_RCGCGPIO_R1; // Activate PORTB
 	UART1_CTL_R &= ~UART_CTL_UARTEN; // disable UART1
@@ -59,13 +64,17 @@ void UART0_Init(void){
 	GPIO_PORTB_PCTL_R = (GPIO_PORTB_PCTL_R & ~0xFF) | (GPIO_PCTL_PB0_U1RX | GPIO_PCTL_PB1_U1TX); // configure UART for PB0, PB1
 	GPIO_PORTB_DEN_R |= 0x03; // enable digitai i/o for PB0 ,PB1
 	GPIO_PORTB_AMSEL_R &= ~0x03; // disable analog func for PB0 ,PB1
-//Amr
+}
+
+//////// Amr  ////////
+/////// 2100374 //////
 void UART0_Write(u8 data){
 	while((UART0_FR_R & 0X0020) != 0); //check if the FIFO is full
 	UART0_DR_R = data;
 }
 
-//Amr
+//////// Amr  ////////
+/////// 2100374 //////
 void UART1_Write(u8 data){
 	while((UART1_FR_R & 0X0020) != 0); //check if the FIFO is full
 	UART1_DR_R = data;
@@ -75,29 +84,29 @@ void UART1_Write(u8 data){
 u8 UART_u8ReadChar(u8 copy_u8UARTNum){
     switch(copy_u8UARTNum){
         case UART0:
-        while(UART1_FR_R & UART_FR_RXFE);
-        return UART0_DR_R & 0xFF;
+			while(UART1_FR_R & UART_FR_RXFE);
+			return UART0_DR_R & 0xFF;
         case UART1:
-        while(UART1_FR_R & UART_FR_RXFE);
-        return UART1_DR_R & 0xFF;
+			while(UART1_FR_R & UART_FR_RXFE);
+			return UART1_DR_R & 0xFF;
         case UART2:
-        while(UART2_FR_R & UART_FR_RXFE);
-        return UART2_DR_R & 0xFF;
+			while(UART2_FR_R & UART_FR_RXFE);
+			return UART2_DR_R & 0xFF;
         case UART3:
-        while(UART3_FR_R & UART_FR_RXFE);
-        return UART3_DR_R & 0xFF;
+			while(UART3_FR_R & UART_FR_RXFE);
+			return UART3_DR_R & 0xFF;
         case UART4:
-        while(UART4_FR_R & UART_FR_RXFE);
-        return UART4_DR_R & 0xFF;
+			while(UART4_FR_R & UART_FR_RXFE);
+			return UART4_DR_R & 0xFF;
         case UART5:
-        while(UART5_FR_R & UART_FR_RXFE);
-        return UART5_DR_R & 0xFF;
+			while(UART5_FR_R & UART_FR_RXFE);
+			return UART5_DR_R & 0xFF;
         case UART6:
-        while(UART6_FR_R & UART_FR_RXFE);
-        return UART6_DR_R & 0xFF;
+			while(UART6_FR_R & UART_FR_RXFE);
+			return UART6_DR_R & 0xFF;
         case UART7:
-        while(UART7_FR_R & UART_FR_RXFE);
-        return UART7_DR_R & 0xFF;
+			while(UART7_FR_R & UART_FR_RXFE);
+			return UART7_DR_R & 0xFF;
         default: /*Invalid UART Number*/ break;
     }
 }
@@ -112,7 +121,9 @@ void UART_ReadStr(u8 copy_u8UARTNum, u8 *copy_pu8GPSData){
     }
 }
 
-/* DIO functions */
+/////////////////////////
+// /* DIO functions */ //
+///////////////////////// 
 // Saad
 u8 DIO_u8SetPinDirection (u8 copy_u8PortId, u8 copy_u8PinId, u8 copy_u8PinDirection) {
 	if (copy_u8PinId >= DIO_u8_PIN_0 && copy_u8PinId <= DIO_u8_PIN_7) //Check if pin number is valid
@@ -247,50 +258,50 @@ u8 DIO_u8GetPinValue (u8 copy_u8PortId, u8 copy_u8PinId, u8 *copy_pu8ReturnedPin
 	return STD_TYPES_NOK;
 }
 
-//Eman
+// Eman
 u8 DIO_u8SetPortDirection(u8 copy_u8PortId, u8 copy_u8PortDirection ){
-	if(copy_u8PortId>=DIO_u8_PORTA&&copy_u8PortId<=DIO_u8_PORTF)       //check if PortId is valid
+	if(copy_u8PortId >= DIO_u8PORT_A &&copy_u8PortId <= DIO_u8PORT_F)       //check if PortId is valid
 	{
 		SET_BIT(SYSCTL_RCGCGPIO_R,copy_u8PortId); 						// To enable a clock and active PORT A
 		while(!GET_BIT(SYSCTL_PRGPIO_R,copy_u8PortId)); 			// Wait till the Clock be stable
 		switch(copy_u8PortId)
 		{
-			case DIO_u8_PORTA:
+			case DIO_u8PORT_A:
 				GPIO_PORTA_LOCK_R  = GPIO_LOCK_KEY; 							// Unlocks the GPIOCR register so we can allow the commit
 				GPIO_PORTA_CR_R    = GPIO_ENABLE_7_BIT;						// Allow changes to PA7-0 
 				GPIO_PORTA_AFSEL_R = 0x00;												// Disable analog functions
 				GPIO_PORTA_PCTL_R  = GPIO_PCTL_VALUE; 						// GPIO_PCTL_VALUE-->To make all pins in PORT A work as DIO 
 				GPIO_PORTA_DEN_R   = 0xFF;												// to enable pin PA0-PA7 as digital 
 			break;
-			case DIO_u8_PORTB:
+			case DIO_u8PORT_B:
 				GPIO_PORTB_LOCK_R  = GPIO_LOCK_KEY; 							// Unlocks the GPIOCR register so we can allow the commit
 				GPIO_PORTB_CR_R    = GPIO_ENABLE_7_BIT;						// Allow changes to PA7-0 
 				GPIO_PORTB_AFSEL_R = 0x00;												// Disable the alternative functions
 				GPIO_PORTB_PCTL_R  = GPIO_PCTL_VALUE; 						// GPIO_PCTL_VALUE-->To make all the pins in PORT B work as DIO 
 				GPIO_PORTB_DEN_R   = 0xFF;												// to enable the pin PB0-PB7 as digital 
 			break;
-			case DIO_u8_PORTC:
+			case DIO_u8PORT_C:
 				GPIO_PORTC_LOCK_R  = GPIO_LOCK_KEY; 							// Unlocks the GPIOCR register so we can allow the commit
 				GPIO_PORTC_CR_R    = GPIO_ENABLE_7_BIT;						// Allow changes to PA7-0 
 				GPIO_PORTC_AFSEL_R = 0x00;												// Disable the alternative functions
 				GPIO_PORTC_PCTL_R  = GPIO_PCTL_VALUE; 						// GPIO_PCTL_VALUE-->To make all the pins in PORT C work as DIO  
 				GPIO_PORTC_DEN_R   = 0xFF;												// to enable the pin PB0-PB7 as digital 
 			break;
-			case DIO_u8_PORTD:
+			case DIO_u8PORT_D:
 				GPIO_PORTD_LOCK_R  = GPIO_LOCK_KEY; 							// Unlocks the GPIOCR register so we can allow the commit
 				GPIO_PORTD_CR_R    = GPIO_ENABLE_7_BIT;						// Allow changes to PA7-0 
 				GPIO_PORTD_AFSEL_R = 0x00;												// Disable the alternative functions
 				GPIO_PORTD_PCTL_R  = GPIO_PCTL_VALUE; 						// GPIO_PCTL_VALUE-->To make all the pins in PORT D work as DIO
 				GPIO_PORTD_DEN_R   = 0xFF;												// to enable the pin PD0-PD7 as digital 
 			break;
-			case DIO_u8_PORTE:
+			case DIO_u8PORT_E:
 				GPIO_PORTE_LOCK_R  = GPIO_LOCK_KEY; 							// Unlocks the GPIOCR register so we can allow the commit
 				GPIO_PORTE_CR_R    = GPIO_ENABLE_7_BIT;						// Allow changes to PA7-0 
 				GPIO_PORTE_AFSEL_R = 0x00;												// Disable the alternative functions
 				GPIO_PORTE_PCTL_R  = GPIO_PCTL_VALUE; 						// GPIO_PCTL_VALUE-->To make all the pins in PORT E work as DIO 
 				GPIO_PORTE_DEN_R   = 0xFF;												// to enable the pin PE0-PE7 as digital 
 			break;
-			case DIO_u8_PORTF:
+			case DIO_u8PORT_F:
 				GPIO_PORTF_LOCK_R  = GPIO_LOCK_KEY; 							// Unlocks the GPIOCR register so we can allow the commit
 				GPIO_PORTF_CR_R    = GPIO_ENABLE_7_BIT;						// Allow changes to PA7-0 
 				GPIO_PORTF_AFSEL_R = 0x00;												// Disable the alternative functions
@@ -357,8 +368,7 @@ else
       return STD_TYPES_NOK;	// PortDirection is Not valid   
 }
 
-//Sarah 
-
+// Sarah 
 u8 DIO_u8SetPortValue		(u8 copy_u8PortId, u8 copy_u8PortValue){
 switch(copy_u8PortId)
 	{
@@ -388,7 +398,7 @@ switch(copy_u8PortId)
 	}
 }
 
-//Engy
+// Engy
 u8 DIO_u8GetPortValue		(u8 copy_u8PortId, u8 *copy_u8ReturnedPortValue)
 {
      if(copy_u8ReturnedPortValue != NULL && ((copy_u8PortId >=DIO_u8PORT_A)&&(copy_u8PortId <=DIO_u8PORT_F)))

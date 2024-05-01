@@ -33,6 +33,10 @@
 #define DIO_u8_HIGH     1
 #define DIO_u8_LOW      0
 
+/* Masks */
+#define PF_mask 0x20
+#define PF0_mask 0x01
+
 /* DIO functions */
 u8 DIO_u8SetPinDirection   (u8 copy_u8PortId, u8 copy_u8PinId, u8 copy_u8PinDirection);		//Saad
   

@@ -1,3 +1,5 @@
+#ifndef __MCAL_DIO_PRIVATE_C_H__
+#define __MCAL_DIO_PRIVATE_C_H__
 //*****************************************************************************
 //
 // GPIO registers (PORTA)
@@ -324,3 +326,11 @@
 #define SYSCTL_PRGPIO_R3      3 //PORTD
 #define SYSCTL_PRGPIO_R4      4 //PORTE	 
 #define SYSCTL_PRGPIO_R5      5 //PORTF 
+
+
+#define GPIO_LOCK_KEY				0x4C4F434B
+#define GPIO_ENABLE_7_BIT			0x000000FF	
+#define GPIO_PCTL_VALUE				0x00000000
+
+
+#endif /**< __MCAL_DIO_PRIVATE_C_H__ */
