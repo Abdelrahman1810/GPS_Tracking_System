@@ -416,11 +416,6 @@
               <FilePath>.\system_TM4C123.c</FilePath>
             </File>
             <File>
-              <FileName>DIO_program.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\CODES\DIO_program.c</FilePath>
-            </File>
-            <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\CODES\main.c</FilePath>
@@ -431,16 +426,6 @@
               <FilePath>..\CODES\BIT_MATH.h</FilePath>
             </File>
             <File>
-              <FileName>DIO_interface.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\CODES\DIO_interface.h</FilePath>
-            </File>
-            <File>
-              <FileName>DIO_private.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\CODES\DIO_private.h</FilePath>
-            </File>
-            <File>
               <FileName>STD_TYPES.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\CODES\STD_TYPES.h</FilePath>
@@ -449,6 +434,21 @@
               <FileName>tm4c123gh6pm.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\CODES\tm4c123gh6pm.h</FilePath>
+            </File>
+            <File>
+              <FileName>program.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\CODES\program.c</FilePath>
+            </File>
+            <File>
+              <FileName>interface.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\CODES\interface.h</FilePath>
+            </File>
+            <File>
+              <FileName>private.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\CODES\private.h</FilePath>
             </File>
           </Files>
         </Group>
