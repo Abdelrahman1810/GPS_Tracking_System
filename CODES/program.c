@@ -3,6 +3,9 @@
 #include "private.h"
 #include "STD_TYPES.h"
 #include "tm4c123gh6pm.h"
+#include "string.h"
+#include "stdint.h"
+#define LEN 10
 
 /*
 	void isCLKWork(u32 SYSCTL_PRGPIO) {
@@ -117,6 +120,44 @@ void UART1_Init(void) {
 	GPIO_PORTB_PCTL_R = (GPIO_PORTB_PCTL_R & ~0xFF) | (GPIO_PCTL_PB0_U1RX | GPIO_PCTL_PB1_U1TX); // configure UART for PB0, PB1
 	GPIO_PORTB_DEN_R |= 0x03; // enable digitai i/o for PB0 ,PB1
 	GPIO_PORTB_AMSEL_R &= ~0x03; // disable analog func for PB0 ,PB1
+}
+
+///////////////////////////////////////////////
+//		Eman Sherif Sayed Ragheb 2100721     // 
+///////////////////////////////////////////////
+int UART0_Available(void){
+   return ((UART0_FR_R&UART_FR_RXFE) == UART_FR_RXFE) ? 0 : 1;
+}
+char UART0_read(){
+   while(UART0_Available() != 1);
+   return UART0_DR_R & 0xFF;
+}
+void UART0_write(char c){
+   while((UART0_FR_R & UART_FR_TXFF) != 0);
+   UART0_DR_R = c;
+}
+
+void GET_Command(char *str, int maxLEN){
+   char c;
+   int i;
+   for(i = 0; i < maxLEN; i++){
+    c = UART0_read();
+    if( c== '\n' || c == '\r') break;
+    else str[i] = c;
+    UART0_write(c);
+}
+}  
+void printStr(char *str){
+   while(*str){
+    UART0_write(*str);
+    str++;
+}
+}
+void UART0_SendByte(int Data)
+{
+		while(UART0_FR_R & UART_FR_TXFF);
+		
+		UART0_DR_R = Data;
 }
 
 ///////////////////////////////////////////////
