@@ -6,6 +6,9 @@
 #include "string.h"
 #include "stdint.h"
 #define LEN 10
+#define NVIC_ST_CTRL_R          (*((volatile unsigned long *)0xE000E010))
+#define NVIC_ST_RELOAD_R        (*((volatile unsigned long *)0xE000E014))
+#define NVIC_ST_CURRENT_R       (*((volatile unsigned long *)0xE000E018))
 
 /*
 	void isCLKWork(u32 SYSCTL_PRGPIO) {
@@ -41,6 +44,25 @@ void RGBLED_init(void){
 	GPIO_PORTF_DIR_R  |= PF123_mask; //Leds are output
 	GPIO_PORTF_DEN_R  |= PF123_mask;
 	GPIO_PORTF_DATA_R &= ~PF123_mask;
+}
+///////////////////////////////
+//Engy Khaled Sayed//
+/////////////////////////////
+//init of TIMER
+void SysTick_Init(u64 delay){
+	NVIC_ST_CTRL_R = 0x00;//disable systick during setup
+	NVIC_ST_RELOAD_R = delay-1;//number of counts
+	NVIC_ST_CURRENT_R = 0x00; //to clear
+	NVIC_ST_CTRL_R  = 0x05 ; //enable systick
+	while ((NVIC_ST_CTRL_R  & 0x00010000)==0){
+		//wait for flag
+	}
+}
+void SysTick_Wait(u64  delay){
+	u64 i;
+	for(i=0 ; i<delay ; i++){
+		SysTick_Init(80000000); //1sec
+	}
 }
 
 //////////////////////////////////////////
