@@ -290,6 +290,22 @@ u8 u8SetPinDirection (u8 copy_u8PortId, u8 copy_u8PinId, u8 copy_u8PinDirection)
 	else
 		return STD_TYPES_NOK; // Invalid pin number
 }
+//////////////////////////////////////
+//	Sarah Hamed Mahmoud Alsayed 2101518	//
+//////////////////////////////////////
+void sendData(char *longitude ,char *lat){
+
+	while(*longitude) {
+		UART1_Write(*longitude);
+		longitude++;
+	}
+
+	while(*lat) {
+		UART1_Write(*lat);
+		lat++;
+	}
+} 
+
 
 //////////////////////////////////////
 //	Abdelrahman Mohamed Ali 2100347	//
