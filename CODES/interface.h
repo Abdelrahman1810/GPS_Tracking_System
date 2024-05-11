@@ -2,6 +2,7 @@
 #define __INTERFACE_C__H
 #include "STD_TYPES.h"
 
+
 /* Macros for PORTS */
 #define u8PORT_A 	0
 #define u8PORT_B 	1
@@ -60,9 +61,7 @@ u8 u8SetPortValue	   (u8 copy_u8PortId, u8 copy_u8PortValue);							    //Sarah
 u8 u8GetPortValue	   (u8 copy_u8PortId, u8 *copy_u8ReturnedPortValue);					//Engy
 
 /* UART functions */
-u8 UART_u8ReadChar(u8 copy_u8UARTNum);
 
-void UART_ReadStr(u8 copy_u8UARTNum, u8 *copy_pu8GPSData);
 
 void UART0_Init(void);
 
@@ -70,9 +69,24 @@ void UART1_Init(void);
 
 void UART0_Write(u8 data);
 
-void UART1_Write(u8 data);
+u8 UART0_Available(void);
 
-/*GPS FUNCTIONS */
+u8 UART0_read(void);
+
+void Send_Data(char *longitude ,char *lat);
+
+
+
+/*GPS Functions */
+u8 GPS_voidReceiveSentence( u8 *Local_u8GPS_Sentence ) ;
+void GPS_voidExtractCoordinates(u8 *copy_pu8Sentence, u8 *copy_u8Longitude,u8 *copy_u8Latitude );
+f32 truncate(f32 *copy_f32FloatValue);
 void APP_voidGetDistance(f32 copy_f32startLatitude, f32 copy_f32startLongitude,f32 copy_f32endLatitude, f32 copy_f32endLongitude, f32 *copy_pf32distance);
+
+
+
+/*Timer Functions*/
+void SysTick_Init(u64 delay);
+void SysTick_Wait(u64  delay);
 
 #endif

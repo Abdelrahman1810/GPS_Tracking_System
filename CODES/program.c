@@ -5,10 +5,10 @@
 #include "tm4c123gh6pm.h"
 #include "string.h"
 #include "stdint.h"
-#define LEN 10
-#define NVIC_ST_CTRL_R          (*((volatile unsigned long *)0xE000E010))
-#define NVIC_ST_RELOAD_R        (*((volatile unsigned long *)0xE000E014))
-#define NVIC_ST_CURRENT_R       (*((volatile unsigned long *)0xE000E018))
+#include "stdio.h"
+#include "math.h"
+
+
 
 /*
 	void isCLKWork(u32 SYSCTL_PRGPIO) {
@@ -30,6 +30,9 @@
 //	return;
 //}
 
+
+/////////////////////////////////////////////////////////PORTF_FUNCTIONS//////////////////////////////////////////////////////////////////////////////////////////////////
+
 //////////////////////////////////
 //	Engy Khaled Sayed 2100610	//
 //////////////////////////////////
@@ -45,25 +48,7 @@ void RGBLED_init(void){
 	GPIO_PORTF_DEN_R  |= PF123_mask;
 	GPIO_PORTF_DATA_R &= ~PF123_mask;
 }
-///////////////////////////////
-//Engy Khaled Sayed//
-/////////////////////////////
-//init of TIMER
-void SysTick_Init(u64 delay){
-	NVIC_ST_CTRL_R = 0x00;//disable systick during setup
-	NVIC_ST_RELOAD_R = delay-1;//number of counts
-	NVIC_ST_CURRENT_R = 0x00; //to clear
-	NVIC_ST_CTRL_R  = 0x05 ; //enable systick
-	while ((NVIC_ST_CTRL_R  & 0x00010000)==0){
-		//wait for flag
-	}
-}
-void SysTick_Wait(u64  delay){
-	u64 i;
-	for(i=0 ; i<delay ; i++){
-		SysTick_Init(80000000); //1sec
-	}
-}
+
 
 //////////////////////////////////////////
 //	Sarah Hamed Mahmoud Alsayed 2101518	//
@@ -84,13 +69,13 @@ void PushButtonInit(){
 ///////////////////////////////////////////////
 //    Mohamed Magdi Mohamed Ahmed 2100519    //
 ///////////////////////////////////////////////
-// switch input
+
 u8  Sw_Input (void)
 {
 	return GPIO_PORTF_DATA_R & 0x01;
 }
 
-//LEDs Output
+
 void LEDs_Output (u8 data)
 {
 	GPIO_PORTF_DATA_R &= ~PF123_mask;
@@ -103,6 +88,44 @@ void Is_Sw_Pressed(u8 SW2 )
  if (SW2/* && distance >= 100*/)
       LEDs_Output (RED) ;
 }
+
+
+void PORTF_Initial(void)  //Initialize All in PortF For Interrupt
+{    
+	SYSCTL_RCGCGPIO_R  |= 0x20 ;   //PF Clock config 
+	while ( (SYSCTL_PRGPIO_R & 0x20 ) == 0 ) ; 
+	GPIO_PORTF_LOCK_R = GPIO_LOCK_KEY ;  // GPIO_LOCK_KEY = 0x4C4F434B
+	GPIO_PORTF_CR_R  |= 0x1F ;  
+	GPIO_PORTF_AMSEL_R &= ~0x1F ;
+	GPIO_PORTF_AFSEL_R &= ~0x1F ;
+	GPIO_PORTF_PCTL_R  &= ~ 0x000FFFFF ; // clear bits in PCTL
+	GPIO_PORTF_DIR_R   |= 0x0E ;  // enable output dir for bits 1,2,3
+	GPIO_PORTF_DEN_R   |= 0x1F ;  // enable bits as digital
+	GPIO_PORTF_DATA_R  &= ~ 0x0E ; // clear bits
+	GPIO_PORTF_PUR_R  |=0x11 ;    // pull up resistors for switchs
+    GPIO_PORTF_IS_R  &=~0x11 ; //edge not level
+	GPIO_PORTF_IBE_R  &=~0x11; //not both edges
+	GPIO_PORTF_IEV_R  &=~0x11;  //falling edge
+	GPIO_PORTF_IM_R  |=0x11 ;   //enable interrupt
+	NVIC_PRI7_R=(NVIC_PRI7_R&0xFF00FFFF)|(1<<22); //setting portf priority  
+	NVIC_EN0_R |=(1<<30);  //EN0,bit30
+
+}
+
+
+
+void GPIOF_Handler(void)   // PORTF Handler For Interrupt
+{ 
+	if(GPIO_PORTF_MIS_R&0x10)
+	{ UART1_CTL_R &= ~UART_CTL_UARTEN; // disable UART1
+	  GPIO_PORTF_ICR_R |=0x10;
+	}
+	
+		
+}
+
+
+/////////////////////////////////////////////////////////UART_FUNCTIONS//////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 /* UART functions */
@@ -147,13 +170,30 @@ void UART1_Init(void) {
 ///////////////////////////////////////////////
 //		Eman Sherif Sayed Ragheb 2100721     // 
 ///////////////////////////////////////////////
-int UART0_Available(void){
+u8 UART0_Available(void)
+{
    return ((UART0_FR_R&UART_FR_RXFE) == UART_FR_RXFE) ? 0 : 1;
 }
-char UART0_read(){
+
+u8 UART0_read(void)
+{
    while(UART0_Available() != 1);
    return UART0_DR_R & 0xFF;
 }
+
+
+u8 UART1_Available(void)
+{
+   return ((UART1_FR_R&UART_FR_RXFE) == UART_FR_RXFE) ? 0 : 1;
+}
+
+u8 UART1_read()
+{
+   while(UART0_Available() != 1);
+   return UART0_DR_R & 0xFF;
+}
+
+
 void UART0_write(char c){
    while((UART0_FR_R & UART_FR_TXFF) != 0);
    UART0_DR_R = c;
@@ -190,9 +230,6 @@ void UART0_Write(u8 data){
 	UART0_DR_R = data;
 }
 
-///////////////////////////////////////////////
-//		Amr Ayman Mohamed Abdo 2100374 		 //
-///////////////////////////////////////////////
 void UART1_Write(u8 data){
 	while((UART1_FR_R & 0X0020) != 0); //check if the FIFO is full
 	UART1_DR_R = data;
@@ -231,9 +268,7 @@ u8 UART_u8ReadChar(u8 copy_u8UARTNum){
     }
 }
 
-//////////////////////////////////////////////
-//	MOHAMAD SAAD M. HASSAN MULKI 2101894	//
-//////////////////////////////////////////////
+
 void UART_ReadStr(u8 copy_u8UARTNum, u8 *copy_pu8GPSData){
 	u8 currentChar = UART_u8ReadChar(copy_u8UARTNum);
     while (currentChar != ','){
@@ -243,9 +278,25 @@ void UART_ReadStr(u8 copy_u8UARTNum, u8 *copy_pu8GPSData){
     }
 }
 
-/////////////////////////
-// /* DIO functions */ //
-///////////////////////// 
+
+//////////////////////////////////////
+//	Sarah Hamed Mahmoud Alsayed 2101518	//
+//////////////////////////////////////
+void Send_Data(char *longitude ,char *lat){
+
+	while(*longitude) {
+		UART0_Write(*longitude);
+		longitude++;
+	}
+
+	while(*lat) {
+		UART0_Write(*lat);
+		lat++;
+	}
+}
+ 
+
+/////////////////////////////////////////////////////////DIO_FUNCTIONS//////////////////////////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////
 //	MOHAMAD SAAD M. HASSAN MULKI 2101894	//
@@ -290,21 +341,6 @@ u8 u8SetPinDirection (u8 copy_u8PortId, u8 copy_u8PinId, u8 copy_u8PinDirection)
 	else
 		return STD_TYPES_NOK; // Invalid pin number
 }
-//////////////////////////////////////
-//	Sarah Hamed Mahmoud Alsayed 2101518	//
-//////////////////////////////////////
-void sendData(char *longitude ,char *lat){
-
-	while(*longitude) {
-		UART1_Write(*longitude);
-		longitude++;
-	}
-
-	while(*lat) {
-		UART1_Write(*lat);
-		lat++;
-	}
-} 
 
 
 //////////////////////////////////////
@@ -579,10 +615,131 @@ u8 u8GetPortValue		(u8 copy_u8PortId, u8 *copy_u8ReturnedPortValue)
     }
 }
 
+
+/////////////////////////////////////////////////////////TIMER_FUNCTIONS//////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+///////////////////////////////
+//Engy Khaled Sayed//
+/////////////////////////////
+
+void SysTick_Init(u64 delay){
+	NVIC_ST_CTRL_R = 0x00;//disable systick during setup
+	NVIC_ST_RELOAD_R = delay-1;//number of counts
+	NVIC_ST_CURRENT_R = 0x00; //to clear
+	NVIC_ST_CTRL_R  = 0x05 ; //enable systick
+	while ((NVIC_ST_CTRL_R  & 0x00010000)==0){
+		//wait for flag
+	}
+}
+void SysTick_Wait(u64  delay){
+	u64 i;
+	for(i=0 ; i<delay ; i++){
+		SysTick_Init(80000000); //1sec
+	}
+}
+
+
+
+
+
+
+/////////////////////////////////////////////////////////GPS_FUNCTIONS//////////////////////////////////////////////////////////////////////////////////////////////////
+
 ///////////////////////////////////////////////
 //    Mohamed Magdi Mohamed Ahmed 2100519    //
 ///////////////////////////////////////////////
-//Distance Calculation 
+
+u8 GPS_voidReceiveSentence( u8 *Local_u8GPS_Sentence )   
+{
+   
+    u8 Local_u8ReadCounter  = 0;
+    u8 comma_count = 0;
+    u8 Local_u8GPS_Check_Index=0;
+    u8 Local_u8GPS_Check[] = "$GPGGA,";
+    u8 Local_u8ReceivedChar;
+    
+
+    while (Local_u8GPS_Check_Index<7)      // Check if the recived nmea sentence is correct should start with "$GPGGA,"
+    {
+                    Local_u8ReceivedChar=UART1_read();
+        if(Local_u8ReceivedChar==Local_u8GPS_Check[Local_u8GPS_Check_Index])
+                    Local_u8GPS_Check_Index++; 
+
+        else return 0; // return 0 if there is only one difference between the recived sentence and check sentence
+    } 
+
+    while(Local_u8ReceivedChar != '*')  // If we come here that means we recived the correct nmea sentence then we well take the whole sentence 
+    {   
+      Local_u8ReceivedChar=UART1_read();
+      Local_u8GPS_Sentence[Local_u8ReadCounter] = Local_u8ReceivedChar;
+      Local_u8ReadCounter++;
+    }
+
+    while (*Local_u8GPS_Sentence != '*')  // Find fix value ---> the desired value is 1 nothing else
+    {
+       
+     if (*Local_u8GPS_Sentence == ',') 
+     {
+            comma_count++;
+           
+        if (comma_count == 5)   // The comma after which we can find the fix value
+        {
+            if (*(Local_u8GPS_Sentence + 1) == '1') 
+                  return 1;   // correct fix 
+
+            else  return 0;   // wrong fix 
+
+                
+        }
+     }
+    
+        Local_u8GPS_Sentence++; 
+    }
+
+}
+
+
+ 
+
+  void GPS_voidExtractCoordinates(u8 *copy_pu8Sentence, u8 *copy_u8Longitude,u8 *copy_u8Latitude )
+{
+    
+    u8 i = 0, j = 0;
+    
+   while (copy_pu8Sentence[i] != ',' )    // Find the first comma
+    {
+        i++;
+    }
+
+    i++;                                      //jump just after the next comma
+
+   while (copy_pu8Sentence[i] != ',' )      // Extract longitude until the next comma
+    {
+        copy_u8Longitude[j++] = copy_pu8Sentence[i++];
+    }
+        copy_u8Longitude[j] = '\0';                         // Null-terminate the string
+   
+    i+=3;                                     //jump just after the next comma
+    j=0;                                     // Reset j for latitude array
+    
+    while (copy_pu8Sentence[i] != ',')       // Extract latitude until the next comma
+    {
+        copy_u8Latitude[j++] = copy_pu8Sentence[i++];
+    }
+        copy_u8Latitude[j] = '\0';                          // Null-terminate the string
+   
+    
+}
+
+
+
+f32 truncate(f32 *copy_f32FloatValue)
+{
+    *copy_f32FloatValue = floor(*copy_f32FloatValue * 10000) / (f64)10000.0;
+    return *copy_f32FloatValue;
+}
+
 void APP_voidGetDistance(f32 copy_f32startLatitude, f32 copy_f32startLongitude,f32 copy_f32endLatitude, f32 copy_f32endLongitude, f32 *copy_pf32distance)
 {
     // convert all coordinates from Degrees into Radians
@@ -603,3 +760,5 @@ void APP_voidGetDistance(f32 copy_f32startLatitude, f32 copy_f32startLongitude,f
     //Multipy by Earth's Radius to get the distance
     *copy_pf32distance = Local_f32c * Earth_Radius;
 }
+
+

@@ -1,10 +1,10 @@
-#ifndef BIT MATH H
-#define BIT_MATH_H
+#ifndef BIT_MATH_H_
+#define BIT_MATH_H_
 
-#define SET_BIT(REG, BIT_NUMBER) (REG |=  (1<< BIT_NUMBER))
-#define CLR_BIT(REG, BIT_NUMBER) (REG &=~ (1<< BIT_NUMBER))
-#define TOG_BIT(REG, BIT_NUMBER) (REG ^=  (1<< BIT_NUMBER))
-#define GET_BIT(REG, BIT_NUMBER) ((REG & (1<< BIT_NUMBER))>>BIT_NUMBER)
+#define SET_BIT(REG, BIT_NUMBER)  REG |= (1 << BIT_NUMBER)
+#define CLR_BIT(REG, BIT_NUMBER)  REG &= ~(1 << BIT_NUMBER)
+#define TOG_BIT(REG, BIT_NUMBER)  REG ^= (1 << BIT_NUMBER)
+#define GET_BIT(REG, BIT_NUMBER)  ((REG & (1 << BIT_NUMBER)) >> BIT_NUMBER)
 
 
-#endif
+#endif 
