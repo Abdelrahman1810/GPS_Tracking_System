@@ -100,3 +100,31 @@ void APP_voidGetDistance(f32 copy_f32startLatitude, f32 copy_f32startLongitude,f
 ///////////////////////////////////////////////
 //    Amr Ayman Mohamed Abdo 2100374	     //
 ///////////////////////////////////////////////
+void GPS_voidExtractCoordinates(u8 *copy_pu8Sentence, u8 *copy_u8Longitude,u8 *copy_u8Latitude )
+{
+    
+    u8 i = 0, j = 0;
+    
+   while (copy_pu8Sentence[i] != ',' )    		// Find the first comma
+    {
+        i++;
+    }
+
+    i++;                                      	//jump just after the next comma
+
+   while (copy_pu8Sentence[i] != ',' )      	//Extract longitude until the next comma
+    {
+        copy_u8Longitude[j++] = copy_pu8Sentence[i++];
+    }
+        copy_u8Longitude[j] = '\0';             //Null-terminate the string
+   
+    i+=3;                                     //jump just after the next comma
+    j=0;                                     // Reset j for latitude array
+    
+    while (copy_pu8Sentence[i] != ',')       // Extract latitude until the next comma
+    {
+        copy_u8Latitude[j++] = copy_pu8Sentence[i++];
+    }
+        copy_u8Latitude[j] = '\0';                  // Null-terminate the string
+   
+}
