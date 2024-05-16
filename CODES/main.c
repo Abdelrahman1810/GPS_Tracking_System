@@ -10,8 +10,11 @@
 
 bool FixRecieved = 0;
 char RecievedSentence[100] = {0};
-char lon[15];
-char lat[15];
+
+char arr[100];
+
+extern char lon[100], lat[100];
+extern char Local_u8ReceivedChar;
 
 int main()
 {
@@ -22,14 +25,17 @@ int main()
 
 	while(1){
 
-		FixRecieved = GPS_voidReceiveSentence(RecievedSentence);
-
-		if(FixRecieved){
-			GPS_voidExtractCoordinates(RecievedSentence, lon, lat);
-			uart5_send_string(RecievedSentence);
+		
+		if(chk_start()) {
+			uart5_send_string(lon);
+			uart5_send('\n');
+			uart5_send_string(lat);
+      uart5_send('\n');
 		}
+                  
+	
 
-		delay(500);
+		delay(1);
 	}
 
 }
