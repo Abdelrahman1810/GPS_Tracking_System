@@ -30,5 +30,7 @@ void uart5_receive_string(char * string, uint32_t len);
 void systick_init(void);
 void wait_1ms(void);
 void delay(int t);
-
+bool chk_start();
+bool get_cordinates();
+bool chk_FIX();
 #endif 
