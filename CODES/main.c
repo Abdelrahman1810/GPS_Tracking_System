@@ -2,47 +2,34 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdint.h>
+#include <stdbool.h>
+#include "tm4c123gh6pm.h"
+#include "STD_TYPES.h"
 #include "interface.h"
 
+bool FixRecieved = 0;
+char RecievedSentence[100] = {0};
+char lon[15];
+char lat[15];
 
-int main() {
+int main()
+{
+	uart2_init();
+	uart5_init();
+	systick_init();
+	PORTF_Initial();
 
+	while(1){
 
-         RGBLED_init();   
-         PushButtonInit();   
-         UART0_Init();
-         UART1_Init();
+		FixRecieved = GPS_voidReceiveSentence(RecievedSentence);
 
-         
-   
-   
-   while (1)
-   {           
-         u8 Fix_Flag=0;
-         u8 Recive_Sentence[100]={0};
-         u8 longitude_U8[15]={0};
-         u8 latitude_U8[15]={0};
-             
-         do {  Fix_Flag= GPS_voidReceiveSentence(Recive_Sentence); } while (Fix_Flag==0);
+		if(FixRecieved){
+			GPS_voidExtractCoordinates(RecievedSentence, lon, lat);
+			uart5_send_string(RecievedSentence);
+		}
 
-           
-               GPS_voidExtractCoordinates(Recive_Sentence, longitude_U8, latitude_U8);
+		delay(500);
+	}
 
-
-               Send_Data(longitude_U8,latitude_U8);
-}
-   
-
-
-
-    
-    u8 Button_Pressed;
-
-    RGBLED_init();   //active port F --> leds 
-
-    PushButtonInit();   //active port F --> switch
-
-    Button_Pressed=Sw_Input ();
-
-    Is_Sw_Pressed(Button_Pressed );
 }

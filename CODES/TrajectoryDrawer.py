@@ -1,6 +1,6 @@
-#######################
-# Abdelrahman 2100347 #
-#######################
+##############################################
+##            Abdelrahman 2100347           ##
+##############################################
 import re
 import folium
 
@@ -17,7 +17,7 @@ float_numbers = re.findall(pattern, content)
 # create an array for points
 points = []
 for x in range(len(float_numbers)):
-   points.append("{:.6f}".format(float(float_numbers[x])))
+    points.append(float("{:.6f}".format(float(float_numbers[x])))*0.01)
 
 num_cordenates = len(points)
 num_point = len(points)//2
