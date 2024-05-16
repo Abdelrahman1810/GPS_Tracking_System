@@ -123,35 +123,6 @@ bool GPS_voidReceiveSentence( char *Local_u8GPS_Sentence )
 //    Amr Ayman Mohamed Abdo 2100374	     //
 ///////////////////////////////////////////////
 
-f32 truncate(f32 *copy_f32FloatValue)
-{
-    *copy_f32FloatValue = floor(*copy_f32FloatValue * 10000) / (f64)10000.0;
-    return *copy_f32FloatValue;
-}
-
-void APP_voidGetDistance(f32 copy_f32startLatitude, f32 copy_f32startLongitude,f32 copy_f32endLatitude, f32 copy_f32endLongitude, f32 *copy_pf32distance)
-{
-    // convert all coordinates from Degrees into Radians
-    f32 Local_f32startLat = truncate(&copy_f32startLatitude)* M_PI/180;
-    f32 Local_f32startLong = truncate(&copy_f32startLongitude)* M_PI/180;
-    f32 Local_f32endLat = truncate(&copy_f32endLatitude)* M_PI/180;
-    f32 Local_f32endLong = truncate(&copy_f32endLongitude)* M_PI/180;
-
-    // calculate latitude difference and longitude difference
-    f32 Local_f32latDifference = Local_f32endLat - Local_f32startLat;
-    f32 Local_f32longDifference = Local_f32endLong - Local_f32startLong;
-
-    //use Haversine formula
-    f32 Local_f32a = sin(Local_f32latDifference / 2) * sin(Local_f32latDifference / 2) + cos(Local_f32startLat) * cos(Local_f32endLat)
-    * sin(Local_f32longDifference / 2) * sin(Local_f32longDifference / 2);
-    f32 Local_f32c = 2 * atan2(sqrt(Local_f32a), sqrt(1 - Local_f32a));
-
-    //Multipy by Earth's Radius to get the distance
-    *copy_pf32distance = Local_f32c * Earth_Radius;
-}
-
-
-
 void GPS_voidExtractCoordinates(u8 *copy_pu8Sentence, u8 *copy_u8Longitude,u8 *copy_u8Latitude )
 {
     
