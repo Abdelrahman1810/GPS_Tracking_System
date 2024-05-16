@@ -20,7 +20,7 @@ void RGB_ToggleOutput(void);
 
 void GPIOF_Handler(void)   // PORTF Handler For Interrupt
 { 
-    if(GPIO_PORTF_MIS_R&0x10)
+    if(GPIO_PORTF_MIS_R&0x10) //if sw2 is pressed 
     { 
         UART5_CTL_R &= ~UART_CTL_UARTEN;    // Disable the UART 
 		GPIO_PORTF_DATA_R |= 0x02;          //Turn red led on
@@ -33,7 +33,7 @@ void PORTF_Initial(void)  //Initialize All in PortF For Interrupt
     SYSCTL_RCGCGPIO_R  |= 0x20 ;   //PF Clock config 
     while ( (SYSCTL_PRGPIO_R & 0x20 ) == 0 ) ; 
     GPIO_PORTF_LOCK_R = GPIO_LOCK_KEY ;  // GPIO_LOCK_KEY = 0x4C4F434B
-    GPIO_PORTF_CR_R  |= 0x1F ;  
+    GPIO_PORTF_CR_R  |= 0x1F ;  //to allow changes to specific pins
     GPIO_PORTF_AMSEL_R &= ~0x1F ;
     GPIO_PORTF_AFSEL_R &= ~0x1F ;
     GPIO_PORTF_PCTL_R  &= ~ 0x000FFFFF ; // clear bits in PCTL
@@ -57,9 +57,4 @@ void RGB_SetOutput(unsigned char data){
 //RGB Clear
 void RGB_ClearOutput(unsigned char data){
     GPIO_PORTF_DATA_R &=~ data;
-}
-
-//RGB Toggle
-void RGB_ToggleOutput(void){
-    GPIO_PORTF_DATA_R ^= 1;
 }
