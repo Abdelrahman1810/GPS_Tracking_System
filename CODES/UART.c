@@ -35,7 +35,6 @@ void uart2_init() {
     UART2_CTL_R &= ~UART_CTL_UARTEN;    // Disable the UART
     UART2_IBRD_R = 104; // Setup the BaudRate to be 9600
     UART2_FBRD_R = 11;  // Setup the BaudRate to be 9600
-    UART2_CC_R |= UART_CC_CS_SYSCLK; // Connect system clock to UART2
     UART2_LCRH_R = (UART_LCRH_WLEN_8 | UART_LCRH_FEN); // Word length 8, Enable FIFO, No parity
     UART2_CTL_R = (UART_CTL_UARTEN | UART_CTL_RXE | UART_CTL_TXE);  // Enable UART2, RX, TX
 
@@ -94,7 +93,6 @@ void uart5_init() {
     UART5_CTL_R &= ~UART_CTL_UARTEN;    // Disable the UART
     UART5_IBRD_R = 104; // Setup the BaudRate to be 9600
     UART5_FBRD_R = 11;  // Setup the BaudRate to be 9600
-    UART5_CC_R |= UART_CC_CS_SYSCLK; // Connect system clock to UART5
     UART5_LCRH_R = (UART_LCRH_WLEN_8 | UART_LCRH_FEN); // Word length 8, Enable FIFO, No parity
     UART5_CTL_R = (UART_CTL_UARTEN | UART_CTL_RXE | UART_CTL_TXE);  // Enable UART5, RX, TX
 
