@@ -42,27 +42,7 @@ bool chk_start() {
     else 
         return 0;
 }
-bool get_cordinates() {    //  073802.00,3003.90540,N,03116.79589,E,1,06,1.48,32.4,M,15.4,M,,*6B
-   
-    while (uart2_receive() != ','); //skip till 1st comma after it we will take the longitude ---> skip this (073802.00)
-    int i = 0;
-    Local_u8ReceivedChar = uart2_receive();
-    while (Local_u8ReceivedChar != ','){
-        lon[i++] = Local_u8ReceivedChar;     //stores the longitude
-        Local_u8ReceivedChar = uart2_receive();
-    }
 
-    while (uart2_receive() != ',');  //skip till 3rd comma after it we will take the latitide 
-
-    i = 0;
-    Local_u8ReceivedChar = uart2_receive();
-    while (Local_u8ReceivedChar != ','){
-        lat[i++] = Local_u8ReceivedChar;      //skip till 5th comma after it we will check fix      
-        Local_u8ReceivedChar = uart2_receive();
-    }
-    while (uart2_receive() != ',');
-    return chk_FIX();
-}
 bool chk_FIX() {
     Local_u8ReceivedChar = uart2_receive();
     if (Local_u8ReceivedChar == '1')
@@ -123,31 +103,24 @@ bool GPS_voidReceiveSentence( char *Local_u8GPS_Sentence )
 //    Amr Ayman Mohamed Abdo 2100374	     //
 ///////////////////////////////////////////////
 
-void GPS_voidExtractCoordinates(u8 *copy_pu8Sentence, u8 *copy_u8Longitude,u8 *copy_u8Latitude )
-{
-    
-    u8 i = 0, j = 0;
-    
-   while (copy_pu8Sentence[i] != ',' )    		// Find the first comma
-    {
-        i++;
+bool get_cordinates() {    //  073802.00,3003.90540,N,03116.79589,E,1,06,1.48,32.4,M,15.4,M,,*6B
+   
+    while (uart2_receive() != ','); //skip till 1st comma after it we will take the longitude ---> skip this (073802.00)
+    int i = 0;
+    Local_u8ReceivedChar = uart2_receive();
+    while (Local_u8ReceivedChar != ','){
+        lon[i++] = Local_u8ReceivedChar;     //stores the longitude
+        Local_u8ReceivedChar = uart2_receive();
     }
 
-    i++;                                      	//jump just after the next comma
+    while (uart2_receive() != ',');  //skip till 3rd comma after it we will take the latitide 
 
-   while (copy_pu8Sentence[i] != ',' )      	//Extract longitude until the next comma
-    {
-        copy_u8Longitude[j++] = copy_pu8Sentence[i++];
+    i = 0;
+    Local_u8ReceivedChar = uart2_receive();
+    while (Local_u8ReceivedChar != ','){
+        lat[i++] = Local_u8ReceivedChar;      //skip till 5th comma after it we will check fix      
+        Local_u8ReceivedChar = uart2_receive();
     }
-        copy_u8Longitude[j] = '\0';             //Null-terminate the string
-   
-    i+=3;                                     //jump just after the next comma
-    j=0;                                     // Reset j for latitude array
-    
-    while (copy_pu8Sentence[i] != ',')       // Extract latitude until the next comma
-    {
-        copy_u8Latitude[j++] = copy_pu8Sentence[i++];
-    }
-        copy_u8Latitude[j] = '\0';                  // Null-terminate the string
-   
+    while (uart2_receive() != ',');
+    return chk_FIX();
 }
