@@ -15,6 +15,9 @@ f32 truncate(f32 *copy_f32FloatValue);
 void APP_voidGetDistance(f32 copy_f32startLatitude, f32 copy_f32startLongitude,f32 copy_f32endLatitude, f32 copy_f32endLongitude, f32 *copy_pf32distance);
 void GPS_voidExtractCoordinates(u8 *copy_pu8Sentence, u8 *copy_u8Longitude,u8 *copy_u8Latitude );
 
+extern char lon[100], lat[100];
+extern char Local_u8ReceivedChar;
+
 ///////////////////////////////////////////////
 //    Mohamed Magdi Mohamed Ahmed 2100519    //
 ///////////////////////////////////////////////
