@@ -5,7 +5,6 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include "tm4c123gh6pm.h"
-#include "STD_TYPES.h"
 #include "interface.h"
 
 bool FixRecieved = 0;
@@ -13,8 +12,8 @@ char RecievedSentence[100] = {0};
 
 char arr[100];
 
-extern char lon[100], lat[100];
-extern char Local_u8ReceivedChar;
+char lon[100], lat[100];
+char Local_u8ReceivedChar;
 
 int main()
 {

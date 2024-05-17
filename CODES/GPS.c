@@ -17,6 +17,9 @@ void GPS_voidExtractCoordinates(u8 *copy_pu8Sentence, u8 *copy_u8Longitude,u8 *c
 char lon[100], lat[100];
 char Local_u8ReceivedChar;
 
+extern char lon[100], lat[100];
+extern char Local_u8ReceivedChar;
+
 ///////////////////////////////////////////////
 //    Mohamed Magdi Mohamed Ahmed 2100519    //
 ///////////////////////////////////////////////
