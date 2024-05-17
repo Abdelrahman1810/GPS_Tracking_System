@@ -24,16 +24,13 @@ int main()
 	PORTF_Initial();
 
 	while(1){
-
 		
 		if(chk_start()) {
 			uart5_send_string(lon);
 			uart5_send('\n');
 			uart5_send_string(lat);
-      uart5_send('\n');
+     		uart5_send('\n');
 		}
-                  
-	
 
 		delay(1);
 	}
